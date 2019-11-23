@@ -41,6 +41,8 @@
         </property>
     </bean>
 
+    <bean id="cruxPropertyPlaceholderConfigurer" class="democlient.eureka.CruxPropertyPlaceholderConfigurer"/>
+
 
     <!-- 启用spring mvc 注解 -->
     <mvc:annotation-driven/>

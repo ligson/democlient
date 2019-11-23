@@ -22,7 +22,7 @@ public class InstanceInfo {
     private InstanceStatus status;
     private InstanceStatus overriddenStatus;
     private InstanceStatus overriddenStatusAlt;
-    private LeaseInfo leaseInfo;
+    private LeaseInfo leaseInfo = new LeaseInfo();
     private Boolean isCoordinatingDiscoveryServer;
 
     private HashMap<String, String> metadata;
