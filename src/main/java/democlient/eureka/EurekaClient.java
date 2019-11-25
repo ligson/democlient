@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import democlient.eureka.enums.ActionType;
 import democlient.eureka.enums.InstanceStatus;
-import democlient.eureka.vo.InstanceInfo;
-import democlient.eureka.vo.LeaseInfo;
-import democlient.eureka.vo.MyDataCenterInfo;
-import democlient.eureka.vo.RegisterInfo;
+import democlient.eureka.vo.*;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -31,6 +28,7 @@ import javax.annotation.PreDestroy;
 import java.net.InetAddress;
 import java.net.URI;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -117,7 +115,7 @@ public class EurekaClient implements EnvironmentAware {
         instanceInfo.setHomePageUrl(homePageUrl);
         instanceInfo.setStatusPageUrl(statusPageUrlPath);
         instanceInfo.setHealthCheckUrl(healthCheckUrlPath);
-        instanceInfo.setStatus(InstanceStatus.DOWN);
+        instanceInfo.setStatus(InstanceStatus.UP);
         instanceInfo.setOverriddenStatus(InstanceStatus.UNKNOWN);
         instanceInfo.setInstanceId(instanceId);
         instanceInfo.setActionType(ActionType.ADDED);
@@ -216,5 +214,17 @@ public class EurekaClient implements EnvironmentAware {
     public void setEnvironment(Environment environment) {
         this.environment = environment;
         processPropFile(environment);
+    }
+
+    public String loadBalance(String serviceId) {
+        String getUrl = defaultZone + "apps/" + serviceId.toUpperCase();
+        RestTemplate restTemplate = new RestTemplate();
+        Apps apps = restTemplate.getForObject(getUrl, Apps.class);
+        if (apps != null && apps.getApplication() != null) {
+            List<InstanceInfo> instances = apps.getApplication().getInstance();
+            return instances.get(0).getHomePageUrl();
+        } else {
+            return null;
+        }
     }
 }

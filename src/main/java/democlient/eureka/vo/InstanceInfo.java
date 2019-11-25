@@ -1,7 +1,6 @@
 package democlient.eureka.vo;
 
 import democlient.eureka.enums.ActionType;
-import democlient.eureka.enums.DataCenterInfo;
 import democlient.eureka.enums.InstanceStatus;
 import lombok.Data;
 
@@ -26,12 +25,12 @@ public class InstanceInfo {
     private Boolean isCoordinatingDiscoveryServer;
 
     private HashMap<String, String> metadata;
-    private Long lastUpdatedTimestamp;
-    private Long lastDirtyTimestamp;
+    private long lastUpdatedTimestamp;
+    private long lastDirtyTimestamp;
     private ActionType actionType;
     private String asgName;
     private String homePageUrl;
     private String statusPageUrl;
     private String healthCheckUrl;
-    private DataCenterInfo dataCenterInfo;
+    private MyDataCenterInfo dataCenterInfo;
 }
